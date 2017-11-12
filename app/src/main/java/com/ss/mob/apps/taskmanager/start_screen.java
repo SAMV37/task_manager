@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -38,26 +40,52 @@ public class start_screen extends Activity{
         login_button = (Button) findViewById(R.id.login_button);
         signup_button = (Button) findViewById(R.id.signup_button);
 
-        login_button.setOnClickListener(new View.OnClickListener() {
+        login_button.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
-                myFire.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.hasChild(username.getText().toString())) {
-                            //child exists
-                            Firebase nickname = myFire.child(username.getText().toString());
-
-                            nickname.child("password").addValueEventListener(new ValueEventListener() {
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch(motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        login_button.setAlpha(.5F);
+                        break;
+                    case MotionEvent.ACTION_DOWN:
+                        login_button.setAlpha(.7F);
+                        if(username.getText().toString().matches("") && password.getText().toString().matches("")) {
+                            Toast.makeText(start_screen.this,
+                                    "Please fill in Username and Password fields", Toast.LENGTH_LONG).show();
+                        }else{
+                            myFire.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    if(password.getText().toString().equals(dataSnapshot.getValue().toString())){
+                                    if (dataSnapshot.hasChild(username.getText().toString())) {
+                                        //child exists
+                                        final Firebase nickname = myFire.child(username.getText().toString());
+
+                                        nickname.child("password").addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                if (password.getText().toString().equals(dataSnapshot.getValue().toString())) {
+                                                    Toast.makeText(start_screen.this,
+                                                            "Logged in successful", Toast.LENGTH_LONG).show();
+                                                    Intent intent = new Intent(getBaseContext(), main_screen.class);
+                                                    intent.putExtra("nickname", username.getText().toString());
+                                                    startActivity(intent);
+                                                } else {
+                                                    Toast.makeText(start_screen.this,
+                                                            "Password is incorrect", Toast.LENGTH_LONG).show();
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(FirebaseError firebaseError) {
+
+                                            }
+                                        });
+                                    } else {
                                         Toast.makeText(start_screen.this,
-                                                "Logged in successful", Toast.LENGTH_LONG).show();
-                                    }else{
-                                        Toast.makeText(start_screen.this,
-                                                "Password is incorrect", Toast.LENGTH_LONG).show();
+                                                "Sorry no user registered with that username", Toast.LENGTH_LONG).show();
+                                        Log.d("This was found", "----------->" + username.getText().toString() + "," + password.getText().toString() +  "<-----------------");
                                     }
+
                                 }
 
                                 @Override
@@ -65,28 +93,29 @@ public class start_screen extends Activity{
 
                                 }
                             });
-                        } else {
-                            Toast.makeText(start_screen.this,
-                                    "Sorry no user registered with that username", Toast.LENGTH_LONG).show();
                         }
+                        break;
+                }
 
-                    }
-
-                    @Override
-                    public void onCancelled(FirebaseError firebaseError) {
-
-                    }
-                });
+                return true;
             }
         });
-
-        signup_button.setOnClickListener(new View.OnClickListener() {
+        signup_button.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), user_creator.class));
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch(motionEvent.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        signup_button.setAlpha(.7F);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        startActivity(new Intent(getApplicationContext(), user_creator.class));
+                        signup_button.setAlpha(.5F);
+                        break;
+                }
+
+                return true;
             }
         });
-
 
     }
 }

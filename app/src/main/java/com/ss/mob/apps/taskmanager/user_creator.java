@@ -9,7 +9,10 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 public class user_creator extends Activity {
     public TextInputEditText username;
@@ -45,28 +48,43 @@ public class user_creator extends Activity {
         sign_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name_text = name.getText().toString();
-                String username_text = username.getText().toString();
-                String email_text = email.getText().toString();
+                final String name_text = name.getText().toString();
+                final String username_text = username.getText().toString();
+                final String email_text = email.getText().toString();
 
-                String password1_text = password1.getText().toString();
-                String password2_text = password2.getText().toString();
+                final String password1_text = password1.getText().toString();
+                final String password2_text = password2.getText().toString();
 
-                if(password1_text.equals(password2_text)) {
-                    Firebase myFireChild = myFire.child(username_text);
+                myFire.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(!dataSnapshot.hasChild(username_text)){
+                            if(password1_text.equals(password2_text)) {
+                                Firebase myFireChild = myFire.child(username_text);
 
-                    Firebase name_child = myFireChild.child("name");
-                    name_child.setValue(name_text);
+                                Firebase name_child = myFireChild.child("name");
+                                name_child.setValue(name_text);
 
-                    Firebase email_child = myFireChild.child("email");
-                    email_child.setValue(email_text);
+                                Firebase email_child = myFireChild.child("email");
+                                email_child.setValue(email_text);
 
-                    Firebase password_child = myFireChild.child("password");
-                    password_child.setValue(password1_text);
-                }else{
-                    Toast.makeText(user_creator.this,
-                            "Passwords do not match", Toast.LENGTH_LONG).show();
-                }
+                                Firebase password_child = myFireChild.child("password");
+                                password_child.setValue(password1_text);
+                            }else{
+                                Toast.makeText(user_creator.this,
+                                        "Passwords do not match", Toast.LENGTH_LONG).show();
+                            }
+                        }else{
+                            Toast.makeText(user_creator.this,
+                                    "Sorry, user already exists", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
             }
         });
     }

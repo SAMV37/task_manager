@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Layout;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.Xml;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -21,6 +22,10 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -39,12 +44,76 @@ public class main_screen extends Activity {
     public int counter = 0;
     ScrollView scroll;
     ImageButton plus;
+    public Firebase myFire;
+
+    public TextView name_textView;
+
+    public String name;
+
+    public long children_count;
+
+    public String note_text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
         Picasso.with(this).setLoggingEnabled(true);
+        Firebase.setAndroidContext(this);
+
+        myFire = new Firebase("https://task-manager-6ee5b.firebaseio.com/");
+
+        name_textView = (TextView) findViewById(R.id.name);
+
+        String username = getIntent().getStringExtra("nickname");
+
+        final Firebase nickname_child = myFire.child(username);
+
+        nickname_child.child("name").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                name = dataSnapshot.getValue().toString();
+                name_textView.setText(name);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+        nickname_child.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChild("notes")){
+                    children_count = dataSnapshot.getChildrenCount();
+                    Log.d("has:", children_count + " notes");
+                    for(int i = 1;i<= children_count;i++){
+                        nickname_child.child("notes").child("note" + i).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                note_text = dataSnapshot.getValue().toString();
+                                layout_adder(counter, note_text);
+                            }
+
+                            @Override
+                            public void onCancelled(FirebaseError firebaseError) {
+
+                            }
+                        });
+                        counter++;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+
+
 
         profile_pic = (ImageView) findViewById(R.id.profile_pic);
         loadImageFromUrl(url);
@@ -62,7 +131,7 @@ public class main_screen extends Activity {
                         break;
                     case MotionEvent.ACTION_UP:
                         plus.setBackgroundDrawable( getResources().getDrawable(R.drawable.rounded_add_button_not_clicked));
-                        layout_adder(counter);
+                        layout_adder(counter, "");
                         counter++;
                         scroll.fullScroll(ScrollView.FOCUS_DOWN);
                         break;
@@ -71,14 +140,19 @@ public class main_screen extends Activity {
             }
         });
 
+
     }
+
+
+
     private void loadImageFromUrl(String url){
         Picasso.with(this).load(url).resize(30,30).into(profile_pic);
     }
 
-    public void layout_adder(final int num) {
+    public void layout_adder(final int num, String text) {
         final TextView task_name = new TextView(this);
-        task_name.setText("Task number " + (num + 1));
+        //task_name.setText("Task number " + (num + 1));
+        task_name.setText(text);
         task_name.setTextSize(30);
         task_name.setTextColor(Color.BLACK);
 
@@ -117,6 +191,7 @@ public class main_screen extends Activity {
         TextView space = new TextView(this);
         space.setText("             ");
         space.setTextSize(20);
+
 
         main_layout.addView(space);
         main_layout.addView(layout);

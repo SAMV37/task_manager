@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/name"
@@ -11,17 +12,23 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:textAlignment="center"
         android:hint="Username"
+        android:textColorHighlight="#ffffff"
         android:layout_marginTop="150dp"
-        android:textColorHint="#ff0000">
+        android:textColorHint="#ffffff"
+        android:background="@drawable/edittext_style"
+        android:alpha="0.4"
+        app:hintTextAppearance="@style/GreenTextInputLayout">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/etUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#ff0000"
-            android:textColorHint="#ff0000"/>
+            android:textColor="#ffffff"
+            android:textColorHighlight="#ffffff"
+            android:textCursorDrawable="@null"
+            android:textColorHint="#ffffff"
+            app:backgroundTint="#ffffff"/>
 
     </android.support.design.widget.TextInputLayout>
 
@@ -31,19 +38,27 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
+        android:textColorHighlight="#ffffff"
         android:layout_marginTop="50dp"
         app:passwordToggleEnabled="true"
+        app:passwordToggleTint="#FFF"
         android:textAlignment="center"
         android:hint="Password"
-        android:textColorHint="#ff0000">
+        android:textColorHint="#ffffff"
+        android:background="@drawable/edittext_style"
+        android:alpha="0.4"
+        app:hintTextAppearance="@style/GreenTextInputLayout">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/etPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:textColorHint="#ff0000"
-            android:textColor="#ff0000"/>
+            android:textCursorDrawable="@null"
+            android:textColorHighlight="#ffffff"
+            android:textColorHint="#ffffff"
+            android:textColor="#ffffff"
+            app:backgroundTint="#ffffff"/>
 
     </android.support.design.widget.TextInputLayout>
 
@@ -55,7 +70,9 @@
         android:layout_marginRight="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="70dp"
-        android:text="Log In"/>
+        android:text="Log In"
+        android:background="@drawable/button_design"
+        android:alpha="0.5"/>
 
     <Button
         android:id="@+id/signup_button"
@@ -64,6 +81,8 @@
         android:layout_marginRight="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="20dp"
-        android:text="Sign Up"/>
+        android:text="Sign Up"
+        android:background="@drawable/button_design"
+        android:alpha="0.5"/>
 
 </LinearLayout>
