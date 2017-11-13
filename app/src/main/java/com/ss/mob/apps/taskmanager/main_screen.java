@@ -1,6 +1,7 @@
 package com.ss.mob.apps.taskmanager;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -52,7 +53,10 @@ public class main_screen extends Activity {
 
     public long children_count;
 
+    public String note_name;
     public String note_text;
+
+    public String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +69,7 @@ public class main_screen extends Activity {
 
         name_textView = (TextView) findViewById(R.id.name);
 
-        String username = getIntent().getStringExtra("nickname");
+        username = getIntent().getStringExtra("nickname");
 
         final Firebase nickname_child = myFire.child(username);
 
@@ -86,23 +90,23 @@ public class main_screen extends Activity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.hasChild("notes")){
-                    children_count = dataSnapshot.getChildrenCount();
-                    Log.d("has:", children_count + " notes");
-                    for(int i = 1;i<= children_count;i++){
-                        nickname_child.child("notes").child("note" + i).addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                note_text = dataSnapshot.getValue().toString();
-                                layout_adder(counter, note_text);
+                    nickname_child.child("notes").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            children_count = dataSnapshot.getChildrenCount();
+                            for(int i = 1;i <= children_count;i++){
+                                counter++;
+                                layout_adder(i);
                             }
 
-                            @Override
-                            public void onCancelled(FirebaseError firebaseError) {
+                        }
 
-                            }
-                        });
-                        counter++;
-                    }
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
+
                 }
             }
 
@@ -114,7 +118,6 @@ public class main_screen extends Activity {
 
 
 
-
         profile_pic = (ImageView) findViewById(R.id.profile_pic);
         loadImageFromUrl(url);
 
@@ -122,41 +125,23 @@ public class main_screen extends Activity {
 
         scroll = (ScrollView) findViewById(R.id.scroll);
 
-        plus.setOnTouchListener(new View.OnTouchListener() {
+        plus.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                switch (motionEvent.getAction() ) {
-                    case MotionEvent.ACTION_DOWN:
-                        plus.setBackgroundDrawable( getResources().getDrawable(R.drawable.rounded_add_button_clicked));
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        plus.setBackgroundDrawable( getResources().getDrawable(R.drawable.rounded_add_button_not_clicked));
-                        layout_adder(counter, "");
-                        counter++;
-                        scroll.fullScroll(ScrollView.FOCUS_DOWN);
-                        break;
-                }
-                return true;
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), note_adder.class);
+                intent.putExtra("nickname", username);
+                intent.putExtra("counter", counter);
+                startActivity(intent);
             }
         });
 
 
     }
 
-
-
     private void loadImageFromUrl(String url){
         Picasso.with(this).load(url).resize(30,30).into(profile_pic);
     }
-
-    public void layout_adder(final int num, String text) {
-        final TextView task_name = new TextView(this);
-        //task_name.setText("Task number " + (num + 1));
-        task_name.setText(text);
-        task_name.setTextSize(30);
-        task_name.setTextColor(Color.BLACK);
-
-
+    public void layout_adder(final int num) {
         final LinearLayout main_layout = (LinearLayout) findViewById(R.id.main_layout);
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -164,29 +149,72 @@ public class main_screen extends Activity {
         int height = displayMetrics.heightPixels;
         int width = displayMetrics.widthPixels;
 
-        RelativeLayout layout = new RelativeLayout(this);
-        layout.setGravity(Gravity.CENTER_HORIZONTAL);
+        final RelativeLayout layout = new RelativeLayout(this);
+//        layout.setGravity(Gravity.CENTER_HORIZONTAL);
         layout.setX((width - 650) / 2);
         layout.setAlpha(.8F);
         layout.setBackgroundResource(R.drawable.layout_background);
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(main_screen.this, "Number: " + (num + 1),
-                        Toast.LENGTH_LONG).show();
+                /////on click function
             }
         });
 
         RelativeLayout.LayoutParams layoutParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            layoutParam.height = 300;
+        layoutParam.height = 300;
         layoutParam.width = 650;
         layoutParam.setMargins(0,30,0,0);
 
         layout.setLayoutParams(layoutParam);
 
+        myFire = new Firebase("https://task-manager-6ee5b.firebaseio.com/");
+
+        final Firebase nickname_child = myFire.child(username);
+
+        nickname_child.child("notes").child("note" + num).child("note_name").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                note_name = dataSnapshot.getValue().toString();
+                final TextView task_name = new TextView(main_screen.this);
+                task_name.setText(note_name);
+                task_name.setX(10);
+                task_name.setTextSize(35);
+                task_name.setTextColor(Color.BLACK);
+
+                layout.addView(task_name);
+
+                Log.d("Note " + num + " name", "" + note_name);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+        nickname_child.child("notes").child("note" + num).child("note_text").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                note_text = dataSnapshot.getValue().toString();
+                final TextView task_text = new TextView(main_screen.this);
+                task_text.setText(note_text);
+                task_text.setTextSize(25);
+                task_text.setY(70);
+                task_text.setX(10);
+                task_text.setTextColor(Color.GRAY);
+                layout.addView(task_text);
+
+                Log.d("Note " + num + " text", "" + note_text);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
 
 
-        layout.addView(task_name);
 
         TextView space = new TextView(this);
         space.setText("             ");

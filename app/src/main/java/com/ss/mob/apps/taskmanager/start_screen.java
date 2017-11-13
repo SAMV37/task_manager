@@ -64,8 +64,6 @@ public class start_screen extends Activity{
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot) {
                                                 if (password.getText().toString().equals(dataSnapshot.getValue().toString())) {
-                                                    Toast.makeText(start_screen.this,
-                                                            "Logged in successful", Toast.LENGTH_LONG).show();
                                                     Intent intent = new Intent(getBaseContext(), main_screen.class);
                                                     intent.putExtra("nickname", username.getText().toString());
                                                     startActivity(intent);

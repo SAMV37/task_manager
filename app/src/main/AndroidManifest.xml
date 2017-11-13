@@ -22,6 +22,7 @@
 
         <activity android:name=".user_creator" />
         <activity android:name=".main_screen" />
+        <activity android:name=".note_adder" />
     </application>
 
 </manifest>
