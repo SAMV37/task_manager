@@ -226,7 +226,6 @@ public class main_screen extends Activity {
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-
             }
         });
 
