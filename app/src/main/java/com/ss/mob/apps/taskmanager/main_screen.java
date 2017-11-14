@@ -1,7 +1,9 @@
 package com.ss.mob.apps.taskmanager;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -45,6 +47,7 @@ public class main_screen extends Activity {
     public int counter = 0;
     ScrollView scroll;
     ImageButton plus;
+    ImageButton logout;
     public Firebase myFire;
 
     public TextView name_textView;
@@ -117,24 +120,58 @@ public class main_screen extends Activity {
         });
 
 
-
-        profile_pic = (ImageView) findViewById(R.id.profile_pic);
-        loadImageFromUrl(url);
-
         plus = (ImageButton) findViewById(R.id.plus_button);
+        logout = (ImageButton) findViewById(R.id.logout_button);
 
         scroll = (ScrollView) findViewById(R.id.scroll);
 
-        plus.setOnClickListener(new View.OnClickListener() {
+        logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), note_adder.class);
-                intent.putExtra("nickname", username);
-                intent.putExtra("counter", counter);
-                startActivity(intent);
             }
         });
 
+        logout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        SharedPreferences settings = getApplicationContext().getSharedPreferences("username", 0);
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putString("username", null);
+                        editor.apply();
+
+                        startActivity(new Intent(getApplicationContext(), start_screen.class));
+                        logout.setBackgroundResource(R.drawable.logout_grey);
+                        break;
+                    case MotionEvent.ACTION_DOWN:
+                        logout.setBackgroundResource(R.drawable.logout_black);
+                        break;
+                }
+
+                return false;
+            }
+        });
+
+        plus.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch(motionEvent.getAction()){
+                    case MotionEvent.ACTION_UP:
+                        Intent intent = new Intent(getBaseContext(), note_adder.class);
+                        intent.putExtra("nickname", username);
+                        intent.putExtra("counter", counter);
+                        startActivity(intent);
+                        plus.setBackgroundResource(R.drawable.note_adder_grey);
+                        break;
+                    case MotionEvent.ACTION_DOWN:
+                        plus.setBackgroundResource(R.drawable.note_adder_black);
+                        break;
+                }
+
+                return false;
+            }
+        });
 
     }
 
@@ -147,12 +184,12 @@ public class main_screen extends Activity {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int height = displayMetrics.heightPixels;
-        int width = displayMetrics.widthPixels;
+        final int width = displayMetrics.widthPixels;
 
         final RelativeLayout layout = new RelativeLayout(this);
 //        layout.setGravity(Gravity.CENTER_HORIZONTAL);
         layout.setX((width - 650) / 2);
-        layout.setAlpha(.8F);
+        layout.setAlpha(.7F);
         layout.setBackgroundResource(R.drawable.layout_background);
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,7 +215,7 @@ public class main_screen extends Activity {
                 note_name = dataSnapshot.getValue().toString();
                 final TextView task_name = new TextView(main_screen.this);
                 task_name.setText(note_name);
-                task_name.setX(10);
+                task_name.setX(20);
                 task_name.setTextSize(35);
                 task_name.setTextColor(Color.BLACK);
 
@@ -201,7 +238,9 @@ public class main_screen extends Activity {
                 task_text.setText(note_text);
                 task_text.setTextSize(25);
                 task_text.setY(70);
-                task_text.setX(10);
+                task_text.setX(20);
+                task_text.setMaxWidth(620);
+                task_text.setMaxHeight(200);
                 task_text.setTextColor(Color.GRAY);
                 layout.addView(task_text);
 

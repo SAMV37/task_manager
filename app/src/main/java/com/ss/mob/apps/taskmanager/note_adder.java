@@ -1,8 +1,10 @@
 package com.ss.mob.apps.taskmanager;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
@@ -66,6 +68,19 @@ public class note_adder extends Activity {
         note_name = (TextInputEditText) findViewById(R.id.etnote_name);
         note_text = (TextInputEditText) findViewById(R.id.etnote_text);
 
+        note_text.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                switch (event.getAction() & MotionEvent.ACTION_MASK){
+                    case MotionEvent.ACTION_UP:
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+                return false;
+            }
+        });
+
         create = (Button) findViewById(R.id.create);
 
         create.setOnClickListener(new View.OnClickListener() {
@@ -97,6 +112,10 @@ public class note_adder extends Activity {
 
                 Firebase text_child = note_num.child("note_text");
                 text_child.setValue(text_text);
+
+                Intent intent = new Intent(getBaseContext(), main_screen.class);
+                intent.putExtra("nickname", username);
+                startActivity(intent);
             }
         });
 

@@ -2,6 +2,7 @@ package com.ss.mob.apps.taskmanager;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.util.Log;
@@ -40,64 +41,80 @@ public class start_screen extends Activity{
         login_button = (Button) findViewById(R.id.login_button);
         signup_button = (Button) findViewById(R.id.signup_button);
 
-        login_button.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                switch(motionEvent.getAction()){
-                    case MotionEvent.ACTION_UP:
-                        login_button.setAlpha(.5F);
-                        break;
-                    case MotionEvent.ACTION_DOWN:
-                        login_button.setAlpha(.7F);
-                        if(username.getText().toString().matches("") && password.getText().toString().matches("")) {
-                            Toast.makeText(start_screen.this,
-                                    "Please fill in Username and Password fields", Toast.LENGTH_LONG).show();
-                        }else{
-                            myFire.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    if (dataSnapshot.hasChild(username.getText().toString())) {
-                                        //child exists
-                                        final Firebase nickname = myFire.child(username.getText().toString());
+        SharedPreferences settings = getApplicationContext().getSharedPreferences("username", 0);
+        String user_name = settings.getString("username", "null");
 
-                                        nickname.child("password").addValueEventListener(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                                if (password.getText().toString().equals(dataSnapshot.getValue().toString())) {
-                                                    Intent intent = new Intent(getBaseContext(), main_screen.class);
-                                                    intent.putExtra("nickname", username.getText().toString());
-                                                    startActivity(intent);
-                                                } else {
-                                                    Toast.makeText(start_screen.this,
-                                                            "Password is incorrect", Toast.LENGTH_LONG).show();
+
+        if(user_name == "null") {
+            login_button.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    switch (motionEvent.getAction()) {
+                        case MotionEvent.ACTION_UP:
+                            login_button.setAlpha(.5F);
+                            break;
+                        case MotionEvent.ACTION_DOWN:
+                            login_button.setAlpha(.7F);
+                            if (username.getText().toString().matches("") && password.getText().toString().matches("")) {
+                                Toast.makeText(start_screen.this,
+                                        "Please fill in Username and Password fields", Toast.LENGTH_LONG).show();
+                            } else {
+                                myFire.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot.hasChild(username.getText().toString())) {
+                                            //child exists
+                                            final Firebase nickname = myFire.child(username.getText().toString());
+
+                                            nickname.child("password").addValueEventListener(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    if (password.getText().toString().equals(dataSnapshot.getValue().toString())) {
+                                                        SharedPreferences settings = getApplicationContext().getSharedPreferences("username", 0);
+                                                        SharedPreferences.Editor editor = settings.edit();
+                                                        editor.putString("username", username.getText().toString());
+
+                                                        editor.apply();
+
+                                                        Intent intent = new Intent(getBaseContext(), main_screen.class);
+                                                        intent.putExtra("nickname", username.getText().toString());
+                                                        startActivity(intent);
+                                                    } else {
+                                                        Toast.makeText(start_screen.this,
+                                                                "Password is incorrect", Toast.LENGTH_LONG).show();
+                                                    }
                                                 }
-                                            }
 
-                                            @Override
-                                            public void onCancelled(FirebaseError firebaseError) {
+                                                @Override
+                                                public void onCancelled(FirebaseError firebaseError) {
 
-                                            }
-                                        });
-                                    } else {
-                                        Toast.makeText(start_screen.this,
-                                                "Sorry no user registered with that username", Toast.LENGTH_LONG).show();
-                                        Log.d("This was found", "----------->" + username.getText().toString() + "," + password.getText().toString() +  "<-----------------");
+                                                }
+                                            });
+                                        } else {
+                                            Toast.makeText(start_screen.this,
+                                                    "Sorry no user registered with that username", Toast.LENGTH_LONG).show();
+                                            Log.d("This was found", "----------->" + username.getText().toString() + "," + password.getText().toString() + "<-----------------");
+                                        }
+
                                     }
 
-                                }
+                                    @Override
+                                    public void onCancelled(FirebaseError firebaseError) {
 
-                                @Override
-                                public void onCancelled(FirebaseError firebaseError) {
+                                    }
+                                });
+                            }
+                            break;
+                    }
 
-                                }
-                            });
-                        }
-                        break;
+                    return true;
                 }
-
-                return true;
-            }
-        });
+            });
+        }else{
+            Intent intent = new Intent(getBaseContext(), main_screen.class);
+            intent.putExtra("nickname", user_name);
+            startActivity(intent);
+        }
         signup_button.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {

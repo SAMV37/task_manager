@@ -6,41 +6,42 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.ss.mob.apps.taskmanager.main_screen"
-    android:background="#ffffff">
+    android:background="@drawable/background">
 
     <LinearLayout
         android:id="@+id/tool_bar"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="#add8e6"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/profile_pic"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/profile_picture"/>
-
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="15dp"
-            android:text="Samvel Petrosyan"
-            android:textSize="25dp"
-            android:textColor="#000000"/>
+        android:background="@drawable/main_screen_top"
+        android:orientation="horizontal"
+        android:alpha="0.7">
 
         <ImageButton
             android:id="@+id/plus_button"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="30dp"
-            android:background="@drawable/rounded_add_button_not_clicked"
-            android:onClick="on_plus"/>
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/note_adder_grey"/>
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="25dp"
+            android:text="Samvel Petrosyan"
+            android:textSize="25dp"
+            android:textColor="#000000"/>
+
+        <ImageButton
+            android:id="@+id/logout_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/logout_grey"/>
+
     </LinearLayout>
 
     <ScrollView
