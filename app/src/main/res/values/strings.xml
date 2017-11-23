@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">task manager</string>
+    <string name="title_activity_bottom_navigation_test">bottom_navigation_test</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_test_1">test_1</string>
+    <string name="title_activity_main_bottom_drawer">main_bottom_drawer</string>
 </resources>

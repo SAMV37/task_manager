@@ -1,8 +1,11 @@
 package com.ss.mob.apps.taskmanager;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
+import android.util.Base64;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -13,6 +16,11 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+
+import java.security.Key;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
 
 public class user_creator extends Activity {
     public TextInputEditText username;
@@ -26,6 +34,10 @@ public class user_creator extends Activity {
 
     public Firebase myFire;
 
+    private static final String ALGORITHM = "AES";
+    private static final String KEY = "1Hbfh667adfDEJ78";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +45,7 @@ public class user_creator extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_user_creator);
         Firebase.setAndroidContext(this);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         myFire = new Firebase("https://task-manager-6ee5b.firebaseio.com/");
 
@@ -70,13 +83,17 @@ public class user_creator extends Activity {
 
                                 Firebase password_child = myFireChild.child("password");
                                 password_child.setValue(password1_text);
+
+                                Intent intent = new Intent(getBaseContext(), main_screen.class);
+                                intent.putExtra("nickname", username_text);
+                                startActivity(intent);
+
                             }else{
                                 Toast.makeText(user_creator.this,
                                         "Passwords do not match", Toast.LENGTH_LONG).show();
                             }
                         }else{
-                            Toast.makeText(user_creator.this,
-                                    "Sorry, user already exists", Toast.LENGTH_LONG).show();
+                            //User already exists ))
                         }
                     }
 
@@ -88,4 +105,5 @@ public class user_creator extends Activity {
             }
         });
     }
+
 }
