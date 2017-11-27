@@ -261,11 +261,32 @@ public class main_screen extends Activity {
                             final TextView task_name = new TextView(main_screen.this);
                             task_name.setText(note_name);
                             task_name.setX(120);
+                            task_name.setY(13);
+                            task_name.setMaxHeight(100);
+                            task_name.setMaxWidth(300);
+                            task_name.setTextSize(30);
+                            task_name.setTextColor(Color.BLACK);
+
+                            layout2.addView(task_name);
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+                        }
+                    });
+
+                    nickname_child.child("notes").child("" + num).child("note_creation_date").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            note_name = dataSnapshot.getValue().toString();
+                            final TextView task_name = new TextView(main_screen.this);
+                            task_name.setText(note_name);
+                            task_name.setX(420);
                             task_name.setY(10);
                             task_name.setMaxHeight(100);
-                            task_name.setMaxWidth(615);
-                            task_name.setTextSize(35);
-                            task_name.setTextColor(Color.BLACK);
+                            task_name.setMaxWidth(380);
+                            task_name.setTextSize(20);
+                            task_name.setTextColor(Color.DKGRAY);
 
                             layout2.addView(task_name);
                         }
@@ -281,11 +302,11 @@ public class main_screen extends Activity {
                             note_text = dataSnapshot.getValue().toString();
                             final TextView task_text = new TextView(main_screen.this);
                             task_text.setText(note_text);
-                            task_text.setTextSize(30);
+                            task_text.setTextSize(25);
                             task_text.setY(110);
                             task_text.setX(25);
                             task_text.setMaxWidth(615);
-                            task_text.setMaxHeight(95);
+                            task_text.setMaxHeight(280);
                             task_text.setTextColor(Color.GRAY);
                             layout.addView(task_text);
                         }

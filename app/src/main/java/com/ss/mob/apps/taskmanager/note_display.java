@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -20,7 +22,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-public class note_display extends Activity{
+public class note_display extends Activity {
 
     public TextView note_name;
     public ImageButton back;
@@ -42,11 +44,20 @@ public class note_display extends Activity{
         Firebase.setAndroidContext(this);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        int height = size.y;
+
         note_name = (TextView) findViewById(R.id.note_name);
         note_text = (TextView) findViewById(R.id.note_text);
         back = (ImageButton) findViewById(R.id.back_button);
         edit = (ImageButton) findViewById(R.id.edit_button);
         complete = (ImageButton) findViewById(R.id.complete_button);
+
+        note_name.setMaxWidth(width - 160);
+        note_name.setMaxHeight(70);
 
         username = getIntent().getStringExtra("nickname");
         count = getIntent().getStringExtra("counter");
@@ -152,9 +163,5 @@ public class note_display extends Activity{
                 return false;
             }
         });
-
-
-
-
     }
 }
