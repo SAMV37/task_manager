@@ -148,27 +148,18 @@ public class main_screen extends Activity {
 
         scroll = (ScrollView) findViewById(R.id.scroll);
 
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            }
-        });
-
         logout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                switch (motionEvent.getAction()){
+                switch(motionEvent.getAction()){
                     case MotionEvent.ACTION_UP:
-                        SharedPreferences settings = getApplicationContext().getSharedPreferences("username", 0);
-                        SharedPreferences.Editor editor = settings.edit();
-                        editor.putString("username", null);
-                        editor.apply();
-
-                        startActivity(new Intent(getApplicationContext(), start_screen.class));
-                        logout.setBackgroundResource(R.drawable.logout_grey);
+                        Intent intent = new Intent(getBaseContext(), account_screen.class);
+                        intent.putExtra("nickname", username);
+                        startActivity(intent);
+                        logout.setAlpha(1);
                         break;
                     case MotionEvent.ACTION_DOWN:
-                        logout.setBackgroundResource(R.drawable.logout_black);
+                        logout.setAlpha(.7F);
                         break;
                 }
 
@@ -185,10 +176,10 @@ public class main_screen extends Activity {
                         intent.putExtra("nickname", username);
                         intent.putExtra("counter", counter);
                         startActivity(intent);
-                        plus.setBackgroundResource(R.drawable.note_adder_grey);
+                        plus.setAlpha(1);
                         break;
                     case MotionEvent.ACTION_DOWN:
-                        plus.setBackgroundResource(R.drawable.note_adder_black);
+                        plus.setAlpha(.7F);
                         break;
                 }
 
@@ -260,9 +251,9 @@ public class main_screen extends Activity {
                             note_name = dataSnapshot.getValue().toString();
                             final TextView task_name = new TextView(main_screen.this);
                             task_name.setText(note_name);
-                            task_name.setX(120);
+                            task_name.setX(110);
                             task_name.setY(13);
-                            task_name.setMaxHeight(100);
+                            task_name.setMaxHeight(80);
                             task_name.setMaxWidth(300);
                             task_name.setTextSize(30);
                             task_name.setTextColor(Color.BLACK);
@@ -281,11 +272,11 @@ public class main_screen extends Activity {
                             note_name = dataSnapshot.getValue().toString();
                             final TextView task_name = new TextView(main_screen.this);
                             task_name.setText(note_name);
-                            task_name.setX(420);
-                            task_name.setY(10);
+                            task_name.setX(440);
+                            task_name.setY(20);
                             task_name.setMaxHeight(100);
                             task_name.setMaxWidth(380);
-                            task_name.setTextSize(20);
+                            task_name.setTextSize(18);
                             task_name.setTextColor(Color.DKGRAY);
 
                             layout2.addView(task_name);
@@ -365,4 +356,5 @@ public class main_screen extends Activity {
         main_layout.addView(space);
         main_layout.addView(layout);
     }
+    public void onBackPressed(){}
 }

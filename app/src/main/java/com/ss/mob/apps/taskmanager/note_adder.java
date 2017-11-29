@@ -130,9 +130,13 @@ public class note_adder extends Activity {
                 Time today = new Time(Time.getCurrentTimezone());
                 today.setToNow();
 
-                Firebase date_child = note_num.child("note_creation_date");
-                date_child.setValue(today.monthDay + "/" + (today.month+1) + "/" + today.year);
-
+                if(today.monthDay > 10) {
+                    Firebase date_child = note_num.child("note_creation_date");
+                    date_child.setValue(today.monthDay + "/" + (today.month + 1) + "/" + today.year);
+                }else{
+                    Firebase date_child = note_num.child("note_creation_date");
+                    date_child.setValue("0" + today.monthDay + "/" + (today.month + 1) + "/" + today.year);
+                }
 
 
 
@@ -143,4 +147,5 @@ public class note_adder extends Activity {
         });
 
     }
+    public void onBackPressed(){}
 }

@@ -141,6 +141,6 @@ public class start_screen extends Activity{
         });
     }
 
-
+    public void onBackPressed(){}
     }
 

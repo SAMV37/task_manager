@@ -11,17 +11,20 @@
         android:roundIcon="@drawable/main_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".start_screen">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".start_screen" />
         <activity android:name=".user_creator" />
         <activity android:name=".main_screen" />
         <activity android:name=".note_adder" />
         <activity android:name=".note_display" />
         <activity android:name=".note_changer" />
+        <activity android:name=".splash_screen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".account_screen"></activity>
     </application>
 
 </manifest>

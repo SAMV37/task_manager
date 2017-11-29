@@ -105,5 +105,5 @@ public class user_creator extends Activity {
             }
         });
     }
-
+    public void onBackPressed(){}
 }

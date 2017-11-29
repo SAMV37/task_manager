@@ -164,4 +164,5 @@ public class note_display extends Activity {
             }
         });
     }
+    public void onBackPressed(){}
 }

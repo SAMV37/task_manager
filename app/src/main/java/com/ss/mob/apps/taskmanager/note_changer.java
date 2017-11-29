@@ -110,4 +110,5 @@ public class note_changer extends Activity {
         });
 
     }
+    public void onBackPressed(){}
 }
