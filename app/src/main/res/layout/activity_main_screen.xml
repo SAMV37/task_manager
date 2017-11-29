@@ -6,13 +6,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.ss.mob.apps.taskmanager.main_screen"
-    android:background="@drawable/background">
+    android:background="#ffffff">
 
     <RelativeLayout
         android:id="@+id/tool_bar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@drawable/main_screen_top"
+        android:background="#f4f3f3"
         android:alpha="0.7">
 
         <ImageButton

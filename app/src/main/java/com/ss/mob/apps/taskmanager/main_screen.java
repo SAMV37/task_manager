@@ -223,7 +223,7 @@ public class main_screen extends Activity {
         });
 
         RelativeLayout.LayoutParams layoutParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        layoutParam.height = 400;
+        layoutParam.height = 250;
         layoutParam.width = 650;
 
         layout.setLayoutParams(layoutParam);
@@ -350,7 +350,7 @@ public class main_screen extends Activity {
 
         TextView space = new TextView(this);
         space.setText("             ");
-        space.setTextSize(20);
+        space.setTextSize(15);
 
 
         main_layout.addView(space);

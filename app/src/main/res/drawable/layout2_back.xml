@@ -2,6 +2,6 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@drawable/inner"/>
     <item android:drawable="@drawable/border"
-        android:top="3px" android:right="3px" android:bottom="0px"
+        android:top="3px" android:right="3px" android:bottom="3px"
         android:left="3px" />
 </layer-list>

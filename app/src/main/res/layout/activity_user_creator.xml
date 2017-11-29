@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background">
+    android:background="#9C27B0">
     <android.support.design.widget.TextInputLayout
         android:id="@+id/username"
         android:layout_width="match_parent"
@@ -17,7 +17,6 @@
         android:layout_marginTop="70dp"
         android:textColorHint="#000000"
         android:background="@drawable/edittext_style"
-        android:alpha="0.4"
         app:hintTextAppearance="@style/GreenTextInputLayout">
 
         <android.support.design.widget.TextInputEditText
@@ -44,7 +43,6 @@
         android:layout_marginTop="20dp"
         android:textColorHint="#000000"
         android:background="@drawable/edittext_style"
-        android:alpha="0.4"
         app:hintTextAppearance="@style/GreenTextInputLayout">
 
         <android.support.design.widget.TextInputEditText
@@ -71,7 +69,6 @@
         android:layout_marginTop="20dp"
         android:textColorHint="#000000"
         android:background="@drawable/edittext_style"
-        android:alpha="0.4"
         app:hintTextAppearance="@style/GreenTextInputLayout">
 
         <android.support.design.widget.TextInputEditText
@@ -100,7 +97,6 @@
         android:layout_marginTop="20dp"
         android:textColorHint="#000000"
         android:background="@drawable/edittext_style"
-        android:alpha="0.4"
         app:hintTextAppearance="@style/GreenTextInputLayout">
 
         <android.support.design.widget.TextInputEditText
@@ -130,7 +126,6 @@
         android:textColorHighlight="#000000"
         android:textColorHint="#000000"
         android:background="@drawable/edittext_style"
-        android:alpha="0.4"
         app:hintTextAppearance="@style/GreenTextInputLayout">
 
         <android.support.design.widget.TextInputEditText
@@ -152,9 +147,10 @@
         android:layout_width="match_parent"
         android:layout_marginRight="30dp"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="50dp"
-        android:text="SIGN UP"
-        android:background="@drawable/button_design"
-        android:alpha="0.5"/>
+        android:layout_marginTop="110dp"
+        android:text="Sign Up"
+        android:textColor="#ffffff"
+        android:textSize="25dp"
+        android:background="@drawable/login_button_design" />
 
 </LinearLayout>

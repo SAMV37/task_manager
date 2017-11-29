@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.ss.mob.apps.taskmanager.splash_screen"
-    android:background="#872980">
+    android:background="#73106b">
     <ImageView
         android:id="@+id/nkar"
-        android:layout_height="100dp"
-        android:layout_width="100dp"
+        android:layout_height="170dp"
+        android:layout_width="170dp"
         android:background="@drawable/logo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="120dp"/>

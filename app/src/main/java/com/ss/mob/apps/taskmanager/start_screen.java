@@ -59,7 +59,7 @@ public class start_screen extends Activity{
                 public boolean onTouch(View view, MotionEvent motionEvent) {
                     switch (motionEvent.getAction()) {
                         case MotionEvent.ACTION_UP:
-                            login_button.setAlpha(.5F);
+                            login_button.setAlpha(1);
                             break;
                         case MotionEvent.ACTION_DOWN:
                             login_button.setAlpha(.7F);
@@ -132,7 +132,7 @@ public class start_screen extends Activity{
                         break;
                     case MotionEvent.ACTION_UP:
                         startActivity(new Intent(getApplicationContext(), user_creator.class));
-                        signup_button.setAlpha(.5F);
+                        signup_button.setAlpha(1);
                         break;
                 }
 

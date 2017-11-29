@@ -6,7 +6,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/main_icon"
+        android:icon="@drawable/logo"
         android:label="Task Manager"
         android:roundIcon="@drawable/main_icon"
         android:supportsRtl="true"
