@@ -131,11 +131,21 @@ public class note_adder extends Activity {
                 today.setToNow();
 
                 if(today.monthDay > 10) {
-                    Firebase date_child = note_num.child("note_creation_date");
-                    date_child.setValue(today.monthDay + "/" + (today.month + 1) + "/" + today.year);
+                    if(today.month > 10 - 1) {
+                        Firebase date_child = note_num.child("note_creation_date");
+                        date_child.setValue(today.monthDay + "/" + (today.month + 1) + "/" + today.year);
+                    }else{
+                        Firebase date_child = note_num.child("note_creation_date");
+                        date_child.setValue(today.monthDay + "/0" + (today.month + 1) + "/" + today.year);
+                    }
                 }else{
-                    Firebase date_child = note_num.child("note_creation_date");
-                    date_child.setValue("0" + today.monthDay + "/" + (today.month + 1) + "/" + today.year);
+                    if(today.month > 10 - 1) {
+                        Firebase date_child = note_num.child("note_creation_date");
+                        date_child.setValue("0" + today.monthDay + "/" + (today.month + 1) + "/" + today.year);
+                    }else{
+                        Firebase date_child = note_num.child("note_creation_date");
+                        date_child.setValue("0" + today.monthDay + "/0" + (today.month + 1) + "/" + today.year);
+                    }
                 }
 
 
@@ -147,5 +157,9 @@ public class note_adder extends Activity {
         });
 
     }
-    public void onBackPressed(){}
+    public void onBackPressed(){
+        Intent intent = new Intent(getBaseContext(), main_screen.class);
+        intent.putExtra("nickname", username);
+        startActivity(intent);
+    }
 }

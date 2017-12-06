@@ -170,4 +170,9 @@ public class account_screen extends Activity {
         });
 
     }
+    public void onBackPressed(){
+        Intent intent = new Intent(getBaseContext(), main_screen.class);
+        intent.putExtra("nickname", username);
+        startActivity(intent);
+    }
 }

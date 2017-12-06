@@ -96,8 +96,23 @@ public class note_changer extends Activity {
                         Time today = new Time(Time.getCurrentTimezone());
                         today.setToNow();
 
-                        Firebase date_child = note_num.child("note_creation_date");
-                        date_child.setValue(today.monthDay + "/" + (today.month+1) + "/" + today.year);
+                        if(today.monthDay > 10) {
+                            if(today.month > 10 - 1) {
+                                Firebase date_child = note_num.child("note_creation_date");
+                                date_child.setValue(today.monthDay + "/" + (today.month + 1) + "/" + today.year);
+                            }else{
+                                Firebase date_child = note_num.child("note_creation_date");
+                                date_child.setValue(today.monthDay + "/0" + (today.month + 1) + "/" + today.year);
+                            }
+                        }else{
+                            if(today.month > 10 - 1) {
+                                Firebase date_child = note_num.child("note_creation_date");
+                                date_child.setValue("0" + today.monthDay + "/" + (today.month + 1) + "/" + today.year);
+                            }else{
+                                Firebase date_child = note_num.child("note_creation_date");
+                                date_child.setValue("0" + today.monthDay + "/0" + (today.month + 1) + "/" + today.year);
+                            }
+                        }
 
                         Intent intent = new Intent(getBaseContext(), note_display.class);
                         intent.putExtra("nickname", username);

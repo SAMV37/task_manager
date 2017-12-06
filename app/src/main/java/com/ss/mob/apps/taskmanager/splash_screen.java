@@ -28,7 +28,7 @@ public class splash_screen extends Activity {
                     startActivity(new Intent(getApplicationContext(), start_screen.class));
                     finish();
             }
-        }, 4000);
+        }, 3000);
     }
     public void onBackPressed(){}
 }

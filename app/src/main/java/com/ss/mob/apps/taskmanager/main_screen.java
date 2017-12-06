@@ -208,7 +208,7 @@ public class main_screen extends Activity {
 
         final RelativeLayout layout = new RelativeLayout(this);
 //        layout.setGravity(Gravity.CENTER_HORIZONTAL);
-        layout.setX((width - 650) / 2);
+        //layout.setX((width - 650) / 2);
         layout.setBackgroundResource(R.drawable.layout_background);
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -222,19 +222,15 @@ public class main_screen extends Activity {
             }
         });
 
-        RelativeLayout.LayoutParams layoutParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        layoutParam.height = 250;
-        layoutParam.width = 650;
-
-        layout.setLayoutParams(layoutParam);
-
-
+        final RelativeLayout.LayoutParams layoutParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        layoutParam.height = 320;
+        layoutParam.width = width;
 
         final RelativeLayout layout2 = new RelativeLayout(this);
         layout2.setBackgroundResource(R.drawable.layout2_back);
         RelativeLayout.LayoutParams layoutParam2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        layoutParam2.height = 110;
-        layoutParam2.width = 650;
+        layoutParam2.height = 150;
+        layoutParam2.width = width;
 
         layout2.setLayoutParams(layoutParam2);
 
@@ -251,10 +247,10 @@ public class main_screen extends Activity {
                             note_name = dataSnapshot.getValue().toString();
                             final TextView task_name = new TextView(main_screen.this);
                             task_name.setText(note_name);
-                            task_name.setX(110);
-                            task_name.setY(13);
-                            task_name.setMaxHeight(80);
-                            task_name.setMaxWidth(300);
+                            task_name.setX(160);
+                            task_name.setY(0);
+                            task_name.setMaxHeight(150);
+                            task_name.setMaxWidth(width - (350 + 160));
                             task_name.setTextSize(30);
                             task_name.setTextColor(Color.BLACK);
 
@@ -272,12 +268,12 @@ public class main_screen extends Activity {
                             note_name = dataSnapshot.getValue().toString();
                             final TextView task_name = new TextView(main_screen.this);
                             task_name.setText(note_name);
-                            task_name.setX(440);
-                            task_name.setY(20);
+                            task_name.setX(width - 350);
+                            task_name.setY(10);
+                            task_name.setTextColor(Color.BLUE);
                             task_name.setMaxHeight(100);
                             task_name.setMaxWidth(380);
                             task_name.setTextSize(18);
-                            task_name.setTextColor(Color.DKGRAY);
 
                             layout2.addView(task_name);
                         }
@@ -291,13 +287,16 @@ public class main_screen extends Activity {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             note_text = dataSnapshot.getValue().toString();
+                            Log.d("Note text length", "" + note_text.length());
+                            Log.d("layoutParam Height 1", "" + layoutParam.height);
+                            Log.d("layoutParam Height 2", "" + layoutParam.height);
                             final TextView task_text = new TextView(main_screen.this);
                             task_text.setText(note_text);
                             task_text.setTextSize(25);
-                            task_text.setY(110);
+                            task_text.setY(150);
                             task_text.setX(25);
-                            task_text.setMaxWidth(615);
-                            task_text.setMaxHeight(280);
+                            task_text.setMaxHeight(150);
+                            task_text.setMaxWidth(width - 30);
                             task_text.setTextColor(Color.GRAY);
                             layout.addView(task_text);
                         }
@@ -310,7 +309,7 @@ public class main_screen extends Activity {
 
                     final ImageButton image = new ImageButton(main_screen.this);
                     LinearLayout.LayoutParams layoutParams  = new
-                            LinearLayout.LayoutParams(90, 90);
+                            LinearLayout.LayoutParams(130, 130);
                     image.setLayoutParams(layoutParams);
                     image.setX(10);
                     image.setY(10);
@@ -343,14 +342,16 @@ public class main_screen extends Activity {
             }
         });
 
+        layout.setLayoutParams(layoutParam);
+
         layout.addView(layout2);
 
 
 
 
         TextView space = new TextView(this);
-        space.setText("             ");
-        space.setTextSize(15);
+        space.setText("");
+        space.setTextSize(3);
 
 
         main_layout.addView(space);

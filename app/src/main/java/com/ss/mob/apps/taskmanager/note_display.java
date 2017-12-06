@@ -56,13 +56,11 @@ public class note_display extends Activity {
         edit = (ImageButton) findViewById(R.id.edit_button);
         complete = (ImageButton) findViewById(R.id.complete_button);
 
-        note_name.setMaxWidth(width - 160);
-        note_name.setMaxHeight(70);
+        note_name.setMaxWidth(180);
+        note_name.setMaxHeight(100);
 
         username = getIntent().getStringExtra("nickname");
         count = getIntent().getStringExtra("counter");
-
-        Log.d("Number", count + "");
 
         myFire = new Firebase("https://task-manager-6ee5b.firebaseio.com/");
 
@@ -73,6 +71,7 @@ public class note_display extends Activity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String text = dataSnapshot.getValue().toString();
                 note_name.setText(text);
+                note_name.setMaxWidth(170);
             }
 
             @Override

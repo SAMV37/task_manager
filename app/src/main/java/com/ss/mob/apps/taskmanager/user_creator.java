@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
+import android.text.format.Time;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -36,6 +38,8 @@ public class user_creator extends Activity {
 
     private static final String ALGORITHM = "AES";
     private static final String KEY = "1Hbfh667adfDEJ78";
+
+    public String date;
 
 
     @Override
@@ -73,6 +77,32 @@ public class user_creator extends Activity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if(!dataSnapshot.hasChild(username_text)){
                             if(password1_text.equals(password2_text)) {
+                                Time today = new Time(Time.getCurrentTimezone());
+                                today.setToNow();
+
+                                int now_day = today.monthDay;
+                                int now_month = today.month + 1;
+                                int now_year = today.year;
+
+                                Log.d("Day", "" + now_day);
+
+                                if(now_month < 10){
+                                    if(now_day < 10) {
+                                        date = "0" + now_month + "/0" + now_day + "/" + now_year;
+                                        Log.d("Date", date + "");
+                                    }else{
+                                        date = "0" + now_month + "/" + now_day + "/" + now_year;
+                                    }
+                                }else{
+                                    if(now_day < 10) {
+                                        date = now_month + "/0" + now_day + "/" + now_year;
+                                    }else {
+                                        date = now_month + "/" + now_day + "/" + now_year;
+                                    }
+                                }
+
+
+
                                 Firebase myFireChild = myFire.child(username_text);
 
                                 Firebase name_child = myFireChild.child("name");
@@ -83,6 +113,9 @@ public class user_creator extends Activity {
 
                                 Firebase password_child = myFireChild.child("password");
                                 password_child.setValue(password1_text);
+
+                                Firebase regi_date_child = myFireChild.child("regi_date");
+                                regi_date_child.setValue(date);
 
                                 Intent intent = new Intent(getBaseContext(), main_screen.class);
                                 intent.putExtra("nickname", username_text);
