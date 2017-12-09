@@ -2,6 +2,7 @@ package com.ss.mob.apps.taskmanager;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -223,13 +224,13 @@ public class main_screen extends Activity {
         });
 
         final RelativeLayout.LayoutParams layoutParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        layoutParam.height = 320;
+        layoutParam.height = dip(this, 80);
         layoutParam.width = width;
 
         final RelativeLayout layout2 = new RelativeLayout(this);
         layout2.setBackgroundResource(R.drawable.layout2_back);
         RelativeLayout.LayoutParams layoutParam2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        layoutParam2.height = 150;
+        layoutParam2.height = dip(this, 40);
         layoutParam2.width = width;
 
         layout2.setLayoutParams(layoutParam2);
@@ -247,10 +248,10 @@ public class main_screen extends Activity {
                             note_name = dataSnapshot.getValue().toString();
                             final TextView task_name = new TextView(main_screen.this);
                             task_name.setText(note_name);
-                            task_name.setX(160);
+                            task_name.setX(dip(main_screen.this, 40));
                             task_name.setY(0);
-                            task_name.setMaxHeight(150);
-                            task_name.setMaxWidth(width - (350 + 160));
+                            task_name.setMaxHeight(dip(main_screen.this, 75));
+                            task_name.setMaxWidth(width - dip(main_screen.this, 250));
                             task_name.setTextSize(30);
                             task_name.setTextColor(Color.BLACK);
 
@@ -268,11 +269,11 @@ public class main_screen extends Activity {
                             note_name = dataSnapshot.getValue().toString();
                             final TextView task_name = new TextView(main_screen.this);
                             task_name.setText(note_name);
-                            task_name.setX(width - 350);
-                            task_name.setY(10);
+                            task_name.setX(width - dip(main_screen.this, 100));
+                            task_name.setY(dip(main_screen.this, 5));
                             task_name.setTextColor(Color.BLUE);
-                            task_name.setMaxHeight(100);
-                            task_name.setMaxWidth(380);
+                            task_name.setMaxHeight(dip(main_screen.this, 50));
+                            task_name.setMaxWidth(dip(main_screen.this, 190));
                             task_name.setTextSize(18);
 
                             layout2.addView(task_name);
@@ -287,16 +288,13 @@ public class main_screen extends Activity {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             note_text = dataSnapshot.getValue().toString();
-                            Log.d("Note text length", "" + note_text.length());
-                            Log.d("layoutParam Height 1", "" + layoutParam.height);
-                            Log.d("layoutParam Height 2", "" + layoutParam.height);
                             final TextView task_text = new TextView(main_screen.this);
                             task_text.setText(note_text);
                             task_text.setTextSize(25);
-                            task_text.setY(150);
-                            task_text.setX(25);
-                            task_text.setMaxHeight(150);
-                            task_text.setMaxWidth(width - 30);
+                            task_text.setY(dip(main_screen.this, 40));
+                            task_text.setX(dip(main_screen.this, 12));
+                            task_text.setMaxHeight(dip(main_screen.this, 75));
+                            task_text.setMaxWidth(width - dip(main_screen.this, 15));
                             task_text.setTextColor(Color.GRAY);
                             layout.addView(task_text);
                         }
@@ -309,10 +307,10 @@ public class main_screen extends Activity {
 
                     final ImageButton image = new ImageButton(main_screen.this);
                     LinearLayout.LayoutParams layoutParams  = new
-                            LinearLayout.LayoutParams(130, 130);
+                            LinearLayout.LayoutParams(dip(main_screen.this, 30), dip(main_screen.this, 30));
                     image.setLayoutParams(layoutParams);
-                    image.setX(10);
-                    image.setY(10);
+                    image.setX(dip(main_screen.this, 5));
+                    image.setY(dip(main_screen.this, 5));
                     nickname_child.child("notes").child("" + num).child("note_completed").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -358,4 +356,8 @@ public class main_screen extends Activity {
         main_layout.addView(layout);
     }
     public void onBackPressed(){}
+    public static int dip(Context context, int pixels) {
+        float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (pixels * scale + 0.5f);
+    }
 }

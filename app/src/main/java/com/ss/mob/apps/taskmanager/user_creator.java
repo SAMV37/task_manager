@@ -4,14 +4,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.design.widget.TextInputEditText;
 import android.text.format.Time;
 import android.util.Base64;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
@@ -32,9 +35,16 @@ public class user_creator extends Activity {
     public TextInputEditText password1;
     public TextInputEditText password2;
 
+    public String name_text;
+    public String username_text;
+    public String email_text;
+
     public Button sign_up;
 
     public Firebase myFire;
+
+    public String password1_text;
+    public String password2_text;
 
     private static final String ALGORITHM = "AES";
     private static final String KEY = "1Hbfh667adfDEJ78";
@@ -65,18 +75,18 @@ public class user_creator extends Activity {
         sign_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String name_text = name.getText().toString();
-                final String username_text = username.getText().toString();
-                final String email_text = email.getText().toString();
+                name_text = name.getText().toString();
+                username_text = username.getText().toString();
+                email_text = email.getText().toString();
 
-                final String password1_text = password1.getText().toString();
-                final String password2_text = password2.getText().toString();
+                password1_text = password1.getText().toString();
+                password2_text = password2.getText().toString();
 
                 myFire.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if(!dataSnapshot.hasChild(username_text)){
-                            if(password1_text.equals(password2_text)) {
+                            if(error_checker()) {
                                 Time today = new Time(Time.getCurrentTimezone());
                                 today.setToNow();
 
@@ -101,8 +111,6 @@ public class user_creator extends Activity {
                                     }
                                 }
 
-
-
                                 Firebase myFireChild = myFire.child(username_text);
 
                                 Firebase name_child = myFireChild.child("name");
@@ -122,11 +130,10 @@ public class user_creator extends Activity {
                                 startActivity(intent);
 
                             }else{
-                                Toast.makeText(user_creator.this,
-                                        "Passwords do not match", Toast.LENGTH_LONG).show();
+                                visible_error();
                             }
                         }else{
-                            //User already exists ))
+                            visible_error();
                         }
                     }
 
@@ -137,6 +144,46 @@ public class user_creator extends Activity {
                 });
             }
         });
+
+        sign_up.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch(motionEvent.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        sign_up.setAlpha(.7F);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        sign_up.setAlpha(1);
+                        break;
+                }
+                return false;
+            }
+        });
     }
     public void onBackPressed(){}
+    public void visible_error(){
+        final TextView error_1 = (TextView) findViewById(R.id.error_1);
+        final TextView error_2 = (TextView) findViewById(R.id.error_2);
+
+
+        error_1.setVisibility(View.VISIBLE);
+        error_2.setVisibility(View.VISIBLE);
+
+        new CountDownTimer(2000, 1000) {
+
+            public void onTick(long millisUntilFinished) {}
+            public void onFinish() {
+
+                error_1.setVisibility(View.INVISIBLE);
+                error_2.setVisibility(View.INVISIBLE);
+            }
+
+        }.start();
+    }
+    public boolean error_checker(){
+        if(password1_text.equals(password2_text) && email_text != null && name_text != null && username_text != null){
+            return true;
+        }
+        return false;
+    }
 }

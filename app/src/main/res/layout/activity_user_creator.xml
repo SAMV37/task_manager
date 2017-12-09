@@ -5,8 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#9C27B0">
+    <TextView
+        android:id="@+id/error_1"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textAlignment="center"
+        android:textSize="25dp"
+        android:textColor="#ffffff"
+        android:visibility="invisible"
+        android:text="Sorry something went wrong"/>
+
+    <TextView
+        android:id="@+id/error_2"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textAlignment="center"
+        android:textSize="25dp"
+        android:visibility="invisible"
+        android:textColor="#ffffff"
+        android:text="Please try again"/>
+
     <android.support.design.widget.TextInputLayout
         android:id="@+id/username"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
@@ -14,7 +35,6 @@
         android:textAlignment="center"
         android:hint="Username"
         android:textColorHighlight="#000000"
-        android:layout_marginTop="70dp"
         android:textColorHint="#000000"
         android:background="@drawable/edittext_style"
         app:hintTextAppearance="@style/GreenTextInputLayout">
@@ -39,8 +59,8 @@
         android:layout_marginRight="30dp"
         android:textAlignment="center"
         android:hint="Full Name"
-        android:textColorHighlight="#000000"
         android:layout_marginTop="20dp"
+        android:textColorHighlight="#000000"
         android:textColorHint="#000000"
         android:background="@drawable/edittext_style"
         app:hintTextAppearance="@style/GreenTextInputLayout">
@@ -147,7 +167,7 @@
         android:layout_width="match_parent"
         android:layout_marginRight="30dp"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="110dp"
+        android:layout_marginTop="80dp"
         android:text="Sign Up"
         android:textColor="#ffffff"
         android:textSize="25dp"
