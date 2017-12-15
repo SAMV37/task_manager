@@ -53,6 +53,7 @@ public class start_screen extends Activity{
         String user_name = settings.getString("username", "null");
 
 
+
         if (user_name == "null") {
             login_button.setOnTouchListener(new View.OnTouchListener() {
                 @Override

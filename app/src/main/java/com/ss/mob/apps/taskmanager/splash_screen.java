@@ -19,9 +19,6 @@ public class splash_screen extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash_screen);
 
-        SharedPreferences settings = getApplicationContext().getSharedPreferences("username", 0);
-        final String user_name = settings.getString("username", "null");
-
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run(){

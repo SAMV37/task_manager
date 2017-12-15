@@ -46,9 +46,6 @@ public class user_creator extends Activity {
     public String password1_text;
     public String password2_text;
 
-    private static final String ALGORITHM = "AES";
-    private static final String KEY = "1Hbfh667adfDEJ78";
-
     public String date;
 
 
@@ -160,7 +157,9 @@ public class user_creator extends Activity {
             }
         });
     }
-    public void onBackPressed(){}
+    public void onBackPressed(){
+        startActivity(new Intent(getApplicationContext(), start_screen.class));
+    }
     public void visible_error(){
         final TextView error_1 = (TextView) findViewById(R.id.error_1);
         final TextView error_2 = (TextView) findViewById(R.id.error_2);

@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -35,6 +37,9 @@ public class note_adder extends Activity {
     public String text_name;
     public String text_text;
 
+    public ProgressBar loading;
+    public LinearLayout full;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +52,10 @@ public class note_adder extends Activity {
         myFire = new Firebase("https://task-manager-6ee5b.firebaseio.com/");
 
         username = getIntent().getStringExtra("nickname");
+
+        loading = (ProgressBar) findViewById(R.id.loading_progress_bar);
+        full = (LinearLayout) findViewById(R.id.full);
+
 
         final Firebase usernameF = myFire.child(username);
 
@@ -94,65 +103,79 @@ public class note_adder extends Activity {
 
         create = (Button) findViewById(R.id.create);
 
-        create.setOnClickListener(new View.OnClickListener() {
+        create.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
-                text_name = note_name.getText().toString();
-                text_text = note_text.getText().toString();
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch(motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
 
-                Firebase usernameF = myFire.child(username);
+                        create.setAlpha(.7F);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        text_name = note_name.getText().toString();
+                        text_text = note_text.getText().toString();
 
-                usernameF.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        counter = dataSnapshot.getChildrenCount();
-                    }
+                        Firebase usernameF = myFire.child(username);
 
-                    @Override
-                    public void onCancelled(FirebaseError firebaseError) {
+                        usernameF.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                counter = dataSnapshot.getChildrenCount();
+                            }
 
-                    }
-                });
+                            @Override
+                            public void onCancelled(FirebaseError firebaseError) {
 
-                Firebase notes = usernameF.child("notes");
+                            }
+                        });
 
-                Firebase note_num = notes.child("" + counter);
+                        Firebase notes = usernameF.child("notes");
 
-                Firebase name_child = note_num.child("note_name");
-                name_child.setValue(text_name);
+                        Firebase note_num = notes.child("" + counter);
 
-                Firebase text_child = note_num.child("note_text");
-                text_child.setValue(text_text);
+                        Firebase name_child = note_num.child("note_name");
+                        name_child.setValue(text_name);
 
-                Firebase com_child = note_num.child("note_completed");
-                com_child.setValue("false");
+                        Firebase text_child = note_num.child("note_text");
+                        text_child.setValue(text_text);
 
-                Time today = new Time(Time.getCurrentTimezone());
-                today.setToNow();
+                        Firebase com_child = note_num.child("note_completed");
+                        com_child.setValue("false");
 
-                if(today.monthDay > 10) {
-                    if(today.month > 10 - 1) {
-                        Firebase date_child = note_num.child("note_creation_date");
-                        date_child.setValue(today.monthDay + "/" + (today.month + 1) + "/" + today.year);
-                    }else{
-                        Firebase date_child = note_num.child("note_creation_date");
-                        date_child.setValue(today.monthDay + "/0" + (today.month + 1) + "/" + today.year);
-                    }
-                }else{
-                    if(today.month > 10 - 1) {
-                        Firebase date_child = note_num.child("note_creation_date");
-                        date_child.setValue("0" + today.monthDay + "/" + (today.month + 1) + "/" + today.year);
-                    }else{
-                        Firebase date_child = note_num.child("note_creation_date");
-                        date_child.setValue("0" + today.monthDay + "/0" + (today.month + 1) + "/" + today.year);
-                    }
+                        Time today = new Time(Time.getCurrentTimezone());
+                        today.setToNow();
+
+                        if(today.monthDay > 10) {
+                            if(today.month > 10 - 1) {
+                                Firebase date_child = note_num.child("note_creation_date");
+                                date_child.setValue(today.monthDay + "/" + (today.month + 1) + "/" + today.year);
+                            }else{
+                                Firebase date_child = note_num.child("note_creation_date");
+                                date_child.setValue(today.monthDay + "/0" + (today.month + 1) + "/" + today.year);
+                            }
+                        }else{
+                            if(today.month > 10 - 1) {
+                                Firebase date_child = note_num.child("note_creation_date");
+                                date_child.setValue("0" + today.monthDay + "/" + (today.month + 1) + "/" + today.year);
+                            }else{
+                                Firebase date_child = note_num.child("note_creation_date");
+                                date_child.setValue("0" + today.monthDay + "/0" + (today.month + 1) + "/" + today.year);
+                            }
+                        }
+
+                        full.setAlpha(.7F);
+                        loading.setVisibility(View.VISIBLE);
+
+
+
+                        Intent intent = new Intent(getBaseContext(), main_screen.class);
+                        intent.putExtra("nickname", username);
+                        startActivity(intent);
+
+                        create.setAlpha(1);
+                        break;
                 }
-
-
-
-                Intent intent = new Intent(getBaseContext(), main_screen.class);
-                intent.putExtra("nickname", username);
-                startActivity(intent);
+                return false;
             }
         });
 

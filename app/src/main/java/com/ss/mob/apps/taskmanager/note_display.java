@@ -56,8 +56,8 @@ public class note_display extends Activity {
         edit = (ImageButton) findViewById(R.id.edit_button);
         complete = (ImageButton) findViewById(R.id.complete_button);
 
-        note_name.setMaxWidth(180);
-        note_name.setMaxHeight(80);
+        note_name.setMaxWidth(230);
+        note_name.setMaxHeight(100);
 
         username = getIntent().getStringExtra("nickname");
         count = getIntent().getStringExtra("counter");
