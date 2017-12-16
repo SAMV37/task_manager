@@ -125,7 +125,6 @@ public class user_creator extends Activity {
                                 Intent intent = new Intent(getBaseContext(), main_screen.class);
                                 intent.putExtra("nickname", username_text);
                                 startActivity(intent);
-
                             }else{
                                 visible_error();
                             }
@@ -164,17 +163,24 @@ public class user_creator extends Activity {
         final TextView error_1 = (TextView) findViewById(R.id.error_1);
         final TextView error_2 = (TextView) findViewById(R.id.error_2);
 
+        new CountDownTimer(500, 500) {
 
-        error_1.setVisibility(View.VISIBLE);
-        error_2.setVisibility(View.VISIBLE);
-
-        new CountDownTimer(2000, 1000) {
-
-            public void onTick(long millisUntilFinished) {}
+            public void onTick(long millisUntilFinished) {
+            }
             public void onFinish() {
+                error_1.setVisibility(View.VISIBLE);
+                error_2.setVisibility(View.VISIBLE);
 
-                error_1.setVisibility(View.INVISIBLE);
-                error_2.setVisibility(View.INVISIBLE);
+                new CountDownTimer(2000, 500) {
+
+                    public void onTick(long millisUntilFinished) {
+                    }
+                    public void onFinish() {
+                        error_1.setVisibility(View.INVISIBLE);
+                        error_2.setVisibility(View.INVISIBLE);
+                    }
+
+                }.start();
             }
 
         }.start();
